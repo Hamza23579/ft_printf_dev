@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hghandi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hghandi <hghandi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/28 20:42:38 by hghandi           #+#    #+#             */
-/*   Updated: 2019/08/04 20:45:12 by hghandi          ###   ########.fr       */
+/*   Created: 2019/08/06 15:00:00 by hghandi           #+#    #+#             */
+/*   Updated: 2019/08/06 15:15:26 by hghandi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-int	writer(t_holder *hold, int i)
+int		writer(t_holder *hold, int i)
 {
-
 	int		j;
 
 	j = i + 1;
@@ -22,14 +21,25 @@ int	writer(t_holder *hold, int i)
 		j++;
 	hold->conver_opts = ft_strsub(hold->format, i + 1, j - i);
 	ft_analyse(hold->conver_opts, hold);
-	if (hold->conver_opts[ft_strlen(hold->conver_opts) - 1] == 'c')
+	if (contains(hold->conver_opts, 'c') != -1)
 		writer_c(hold);
-	if (hold->conver_opts[ft_strlen(hold->conver_opts) - 1] == 's')
+	if (contains(hold->conver_opts, 's') != -1)
 		writer_s(hold);
-	if (hold->conver_opts[ft_strlen(hold->conver_opts) - 1] == 'p')
+	if (contains(hold->conver_opts, 'p') != -1)
 		writer_p(hold);
-	if (hold->conver_opts[ft_strlen(hold->conver_opts) - 1] == 'd')
+	if (contains(hold->conver_opts, 'd') != -1 ||
+		contains(hold->conver_opts, 'i') != -1 ||
+		contains(hold->conver_opts, 'o') != -1 ||
+		contains(hold->conver_opts, 'u') != -1 ||
+		contains(hold->conver_opts, 'x') != -1 ||
+		contains(hold->conver_opts, 'X') != -1)
 		writer_d(hold);
+	if (contains(hold->conver_opts, '%') != -1)
+	{
+		hold->conver_opts[ft_strlen(hold->conver_opts) - 1] = 'c';
+		hold->conver_opts = ft_strjoin("%", hold->conver_opts);
+		ft_printf(hold->conver_opts, '%');
+	}
 	return (j + 1);
 }
 
@@ -43,18 +53,20 @@ int		parse(t_holder *hold)
 	{
 		if (hold->format[i] == '%')
 			i = writer(hold, i);
-		else 
-		if (hold->format[i] != '%')
+		else
 		{
-			write(1, &(hold->format[i]), 1);
-			hold->count++;
-			i++;
+			if (hold->format[i] != '%')
+			{
+				write(1, &(hold->format[i]), 1);
+				hold->count++;
+				i++;
+			}
 		}
 	}
 	return (hold->count);
 }
 
-int ft_printf(char *format, ...)
+int		ft_printf(char *format, ...)
 {
 	t_holder	hold;
 	int			lenght;
@@ -74,17 +86,14 @@ int main(void)
 	int j;
 	// // long long int d = -68435135438435;
 
-	i = ft_printf("\n|%-+23.5hd|%- 23.5hd|%-023.5hd|%+ 23.5hd|%+023.5hd|% 023.5hd|%-+ 023.5hd|\n", LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN);
-	j =    printf("\n|%-+23.5hd|%- 23.5hd|%-023.5hd|%+ 23.5hd|%+023.5hd|% 023.5hd|%-+ 023.5hd|\n", LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN);
+	i = ft_printf("\n|%-25.%|test\n");
+	j =    printf("\n|%-25.%|test\n");
 	// ft_printf("\n|%d|\n", -12);
-	// printf("\n% .d\n", -5555);
-	// // printf("|itoa(0) = %s|\n", ft_itoa_base(0, 16));
-	printf("dyalna => %i dyalhom => %i \n", i, j);
-	// printf("%d\n", ft_atoi(".45"));
-	//ft_printf("\n|%-+23hd|%- 23hd|%-023hd|%+ 23hd|%+023hd|% 023hd|%-+ 023hd|\n", LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN);
-	  // printf("\n|%-+23hd|%- 23hd|%-023hd|%+ 23hd|%+023hd|% 023hd|%-+ 023hd|\n", LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN, LLONG_MIN);
+	// ft_printf("\n%#X\n", 1000);
+	   // printf("\n%#X\n", 1000);
 	// printf("dyalna => %i dyalhom => %i \n", i, j);
-	// printf("%-08i" , 1234);
+	// printf("%d\n", ft_atoi(".45"));
+	// printf("dyalna => %d dyalhom => %d \n", i, j);
 	// printf("%-+023d\n", 15);
 
 	return (0);

@@ -3,61 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jadi <md.eljadi@outlook.fr>            +#+  +:+       +#+        */
+/*   By: hghandi <hghandi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/07 14:08:59 by mel-jadi          #+#    #+#             */
-/*   Updated: 2018/10/15 22:56:23 by mel-jadi         ###   ########.fr       */
+/*   Created: 2019/08/07 13:27:17 by hghandi           #+#    #+#             */
+/*   Updated: 2019/08/07 13:27:19 by hghandi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int                ft_count_digits(long long int nb)
+long long int	ft_count_digits(long long int nb)
 {
-    int                        total;
-    unsigned long long int    nbr;
+	long long int			total;
+	unsigned long long int	nbr;
 
-    total = 0;
-    if (nb < 0)
-        nb *= -1;
-    nbr = (unsigned long long int)nb;
-    while (nbr >= 10)
-    {
-        nbr /= 10;
-        total++;
-    }
-    total++;
-    return (total);
+	total = 0;
+	if (nb < 0)
+		nb *= -1;
+	nbr = (unsigned long long int)nb;
+	while (nbr >= 10)
+	{
+		nbr /= 10;
+		total++;
+	}
+	total++;
+	return (total);
 }
 
-long long int    check_negative(long long int *n, long long int digitscount)
+long long int	ft_abs_l(long long int nbr)
 {
-    digitscount++;
-    *n *= -1;
-    return (digitscount);
+	if (nbr < 0)
+		return (-nbr);
+	return (nbr);
 }
 
-char            *ft_itoa(long long int n)
+char			*ft_itoa(long long int n)
 {
-    char                    *number;
-    int                        i;
-    unsigned long long int    nbr;
-    long long int            digitscount;
+	char					*number;
+	int						i;
+	unsigned long long int	nbr;
+	int						digitscount;
 
-    digitscount = ft_count_digits(n);
-    if (n < 0)
-        digitscount = check_negative(&n, digitscount);
-    if (!(number = (char *)malloc(sizeof(char) * (digitscount + 1))))
-        return (NULL);
-    number[0] = '-';
-    nbr = (unsigned long long int)n;
-    i = digitscount;
-    number[i--] = '\0';
-    while (nbr >= 10)
-    {
-        number[i--] = '0' + (nbr % 10);
-        nbr /= 10;
-    }
-    number[i] = '0' + nbr;
-    return (number);
+	digitscount = ft_count_digits(n);
+	if (n < 0)
+		digitscount++;
+	n = ft_abs_l(n);
+	number = (char *)malloc(sizeof(char) * (digitscount + 1));
+	if (number == NULL)
+		return (NULL);
+	number[0] = '-';
+	nbr = (unsigned long long int)n;
+	i = digitscount;
+	number[i--] = '\0';
+	while (nbr >= 10)
+	{
+		number[i--] = '0' + (nbr % 10);
+		nbr /= 10;
+	}
+	number[i] = '0' + nbr;
+	return (number);
 }

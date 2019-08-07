@@ -85,6 +85,7 @@ char			*ft_strrchr(const char *s, int c);
 char			*ft_itoa(long long int n);
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 char			*ft_strlowcase(char *str);
+char			*ft_struppercase(char *str);
 char			*ft_strcapitalize(char *str);
 void			ft_swap(int *a, int *b);
 char			*ft_strrev(char *str);

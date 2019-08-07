@@ -11,15 +11,15 @@
 # **************************************************************************** #
 
 CFLAGS = -Wextra -Wall -Werror
-EXEC = ft_printf
+NAME = libftprintf.a
 SRC = srcs/*.c
 OBJ = *.o
 
-all: $(EXEC)
+all: $(NAME)
 
-$(EXEC):
+$(NAME):
 	@gcc -c $(SRC) srcs/libft/*.c
-	@ar rc libftprintf.a *.o
+	@ar rc $(NAME) *.o
 	@rm -rf *.o
 	@echo "\033[0;31m\033[0;32m Compilation without errors ^_^ \033[0;31m"
 
@@ -27,6 +27,6 @@ clean:
 	@rm -rf OBJTS
 	@rm -f $(OBJ)
 fclean: clean
-		@rm -f $(EXEC)
+		@rm -f $(NAME)
 
 re: fclean all
