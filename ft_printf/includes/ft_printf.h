@@ -13,6 +13,7 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 # define FLAGS "cspdiouxXf%"
+# define FLAGS_H "cspdiouxXf"
 # define OPTIONS "-+#0 "
 # include <stdio.h>
 # include <stdlib.h>
@@ -38,9 +39,16 @@ typedef struct		s_holder
 	void			*address;
 	int				sign;
 	int				is_printed;
+	char			*dieze;
+	int				percent;
 	va_list			args;
 
 }					t_holder;
+
+typedef struct 		s_dieze
+{
+	
+}					t_dieze;
 
 int					ft_printf(char *format, ...);
 int					parse(t_holder *hold);
@@ -60,5 +68,9 @@ void				print_zeros(t_holder *hold);
 void				print_sign(t_holder *hold);
 void				printable(t_holder *hold);
 void				extract_number_o_u_x_x(t_holder *hold);
+char				*remove_h_l(t_holder *hold);
+void				remove_space(char *str);
+int					writer_percent(t_holder *hold, int i);
+int					print_percent(t_holder *hold);
 
 #endif

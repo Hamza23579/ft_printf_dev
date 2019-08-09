@@ -22,6 +22,7 @@ void	ft_initializer(t_holder *hold)
 	hold->printble = 0;
 	hold->sign = 0;
 	hold->is_printed = 0;
+	hold->percent = 0;
 }
 
 char	*ft_itoa_base(unsigned long long int value, int base)
